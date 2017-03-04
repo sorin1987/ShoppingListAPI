@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Microsoft.Practices.Unity;
+using ShoppingList.Bootstrapper;
+using ShoppingList.Infrastructure;
 
 namespace ShoppingList
 {
@@ -9,7 +12,9 @@ namespace ShoppingList
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            var container = new UnityContainer();
+            container.RegisterType<IDrinkRepository, DrinkRepository>(new HierarchicalLifetimeManager());
+            config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes
             config.MapHttpAttributeRoutes();
