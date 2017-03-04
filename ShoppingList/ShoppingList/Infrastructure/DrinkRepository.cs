@@ -8,43 +8,44 @@ namespace ShoppingList.Infrastructure
 {
     public class DrinkRepository : IDrinkRepository
     {
-        private List<ShoppingListItem> drinks = new List<ShoppingListItem>()
+        private static readonly List<Drink> drinks = new List<Drink>()
         {
-            new ShoppingListItem(){Drink = new Drink(){Name = "Pepsi"}, Quantity = 2},
-            new ShoppingListItem(){Drink = new Drink(){Name = "Coca Cola"}, Quantity = 1},
-            new ShoppingListItem(){Drink = new Drink(){Name = "Evian"}, Quantity = 3}
+            new Drink(){ Name = "Pepsi", Quantity = 2 },
+            new Drink(){ Name = "Coca Cola", Quantity = 1 },
+            new Drink(){ Name = "Evian", Quantity = 3 }
         };
 
-        public IEnumerable<ShoppingListItem> GetAll()
+        public IEnumerable<Drink> GetAll()
         {
             return drinks;
         }
 
-        public ShoppingListItem Get(string drinkName)
+        public Drink Get(string drinkName)
         {
-            return drinks.Find(s => String.Equals(s.Drink.Name, drinkName, StringComparison.InvariantCultureIgnoreCase));
+            return drinks.Find(s => String.Equals(s.Name, drinkName, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public void Add(ShoppingListItem drink)
+        public Drink Add(Drink drink)
         {
-            if (drinks.All(s => s.Drink.Name != drink.Drink.Name))
+            if (drinks.All(s => s.Name != drink.Name))
                 drinks.Add(drink);
             else
                 Update(drink);
+            return Get(drink.Name);
         }
 
         public void Delete(string drinkName)
         {
-            var shoppingListItem = drinks.SingleOrDefault(d => String.Equals(d.Drink.Name, drinkName, StringComparison.InvariantCultureIgnoreCase));
-            if (shoppingListItem != null)
-                drinks.Remove(shoppingListItem);
+            var drink = drinks.SingleOrDefault(d => String.Equals(d.Name, drinkName, StringComparison.InvariantCultureIgnoreCase));
+            if (drink != null)
+                drinks.Remove(drink);
         }
 
-        public void Update(ShoppingListItem drink)
+        public void Update(Drink drink)
         {
-            var shoppingListItem = drinks.FirstOrDefault(d => String.Equals(d.Drink.Name, drink.Drink.Name, StringComparison.InvariantCultureIgnoreCase));
-            if (shoppingListItem != null)
-                shoppingListItem.Quantity += drink.Quantity;
+            var drinkTemp = drinks.FirstOrDefault(d => String.Equals(d.Name, drink.Name, StringComparison.InvariantCultureIgnoreCase));
+            if (drinkTemp != null)
+                drinkTemp.Quantity += drink.Quantity;
         }
     }
 }
