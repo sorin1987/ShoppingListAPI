@@ -30,7 +30,10 @@ namespace ShoppingList.Infrastructure
             if (drinks.All(s => s.Name != drink.Name))
                 drinks.Add(drink);
             else
-                Update(drink);
+            {
+                var drinkTmp = Get(drink.Name);
+                drinkTmp.Quantity += drink.Quantity;
+            }
             return Get(drink.Name);
         }
 
@@ -45,7 +48,12 @@ namespace ShoppingList.Infrastructure
         {
             var drinkTemp = drinks.FirstOrDefault(d => String.Equals(d.Name, drink.Name, StringComparison.InvariantCultureIgnoreCase));
             if (drinkTemp != null)
-                drinkTemp.Quantity += drink.Quantity;
+            {
+                drinkTemp.Quantity = drink.Quantity;
+                drinkTemp.Description = drink.Description;
+                drinkTemp.Price = drink.Price;
+                drinkTemp.Name = drink.Name;
+            }
         }
     }
 }
