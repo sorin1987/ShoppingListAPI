@@ -9,7 +9,8 @@ using ShoppingList.Models;
 
 namespace ShoppingList.Controllers
 {
-    //[ValidateModelState]
+    [ValidateModelState]
+    [RoutePrefix("api/drinks")]
     public class DrinksController : ApiController
     {
         private readonly IDrinkRepository _drinkRepository;
@@ -35,6 +36,7 @@ namespace ShoppingList.Controllers
         }
 
         [HttpGet]
+        [Route("{drinkName}")]
         public HttpResponseMessage Get(string drinkName)
         {
             try
@@ -79,6 +81,7 @@ namespace ShoppingList.Controllers
         }
 
         [HttpDelete]
+        [Route("{drinkName}")]
         public HttpResponseMessage Delete(string drinkName)
         {
             try
